@@ -54,7 +54,7 @@ class RAG:
         """
         if path:
             self.vector_store = FAISS.load_local(
-                "vector_store",
+                path,
                 self.embedding_model,
                 allow_dangerous_deserialization=True,
             )
@@ -142,7 +142,7 @@ class RAG:
         """
         Retrieve a query
         :param query: Query to retrieve
-        :param document: Document to use for the retrieval
+        :param document: Optional document to filter on (has to be in form of path to the sorted document)
         """
         if document:
             filter = {"source": document}
@@ -171,7 +171,7 @@ class RAG:
         Answer a query
         :param query: Query to answer
         :param max_new_tokens: Maximum number of tokens to generate
-        :param document: Document to use for the answer
+        :param document: Optional document to filter on (has to be in form of path to the sorted document)
         """
         retrieved_passages = self.retrieve(query, document)
         passages_contents = [p.page_content for p in retrieved_passages]
