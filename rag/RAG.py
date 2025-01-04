@@ -202,7 +202,7 @@ class RAG:
         """
         Quickstart the RAG model
         :param use_default_db: Whether or not to start with the database that contains default books. True by default
-        :param book_dir: Directory containing the books. Leave empty if you wish to add no books
+        :param book_dir: Directory containing the books. Leave `None` if you wish to add no books
         """
         rag = RAG().load_embedding_model().load_reranker().load_llm()
         
