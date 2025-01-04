@@ -14,10 +14,7 @@ class RAG:
     """
     Class to represent a Retrieval Augmented Generation model
     """
-    DEFAULT_DB_PATH = os.path.abspath(os.path.join(
-        __file__,
-        '../../databases/books_default'
-    ))
+    DEFAULT_DB_PATH = Path(__file__).resolve().parent.parent / 'databases' / 'books_default'
 
     def __init__(
         self,
