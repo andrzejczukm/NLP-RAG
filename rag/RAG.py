@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from langchain.vectorstores import FAISS
@@ -13,6 +14,7 @@ class RAG:
     """
     Class to represent a Retrieval Augmented Generation model
     """
+    DEFAULT_DB_PATH = Path(__file__).resolve().parent.parent / 'databases' / 'books_default'
 
     def __init__(
         self,
@@ -193,13 +195,20 @@ class RAG:
         return self
 
     @staticmethod
-    def quickstart(book_dir):
+    def quickstart(use_default_db=True, book_dir=None):
         """
         Quickstart the RAG model
-        :param book_dir: Directory containing the books
+        :param use_default_db: Whether or not to start with the database that contains default books. True by default
+        :param book_dir: Directory containing the books. Leave `None` if you wish to add no books
         """
         rag = RAG().load_embedding_model().load_reranker().load_llm()
-        rag.add_books(
-            [str(p) for p in Path(book_dir).glob("*") if p.suffix in [".txt", ".pdf"]]
-        )
+        
+        if use_default_db:
+            rag.load_database(RAG.DEFAULT_DB_PATH)
+
+        if book_dir is not None:
+            rag.add_books(
+                [str(p) for p in Path(book_dir).glob("*") if p.suffix in [".txt", ".pdf"]]
+            )
+
         return rag
